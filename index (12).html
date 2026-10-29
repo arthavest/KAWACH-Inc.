@@ -1,0 +1,958 @@
+Here is the full HTML, CSS, and JavaScript code for the KAWACH corporate parent website. You can save this directly into an index.html file and open it in any browser or host it on GitHub Pages:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAWACH GROUP | Institutional Parent Conglomerate</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            400: '#F6D061',
+                            500: '#E5B834',
+                            600: '#C89B1D',
+                            700: '#9E7711'
+                        },
+                        navy: {
+                            800: '#0b1329',
+                            900: '#050a17',
+                            950: '#02050d'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Cinzel', 'serif'],
+                        body: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #02050d;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        .heading-font {
+            font-family: 'Cinzel', serif;
+        }
+        
+        /* Custom Animated Background Gradient */
+        .hero-bg {
+            background: radial-gradient(circle at 50% 20%, rgba(229, 184, 52, 0.12) 0%, rgba(11, 19, 41, 0.9) 60%, rgba(2, 5, 13, 1) 100%);
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF099 0%, #E5B834 50%, #A3790F 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-border-gradient {
+            border-image: linear-gradient(to right, #E5B834, rgba(229, 184, 52, 0.1)) 1;
+        }
+
+        .glass-card {
+            background: rgba(11, 19, 41, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(229, 184, 52, 0.15);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(229, 184, 52, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(229, 184, 52, 0.2);
+            transform: translateY(-4px);
+        }
+
+        /* Particle / Kinetic Network Canvas */
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #02050d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #E5B834;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-gold-500 selection:text-black">
+
+    <!-- NAVIGATION BAR -->
+    <nav class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-navy-950/80 backdrop-blur-md border-b border-gold-500/10" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="showSection('home')">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gold-400 to-gold-700 flex items-center justify-center shadow-lg shadow-gold-500/20">
+                        <i class="fa-solid fa-shield-halved text-navy-950 text-xl font-bold"></i>
+                    </div>
+                    <div>
+                        <span class="heading-font text-2xl font-black tracking-wider text-white">KAWACH</span>
+                        <span class="block text-[9px] uppercase tracking-[0.3em] text-gold-400 font-bold">Group Enterprise</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                    <button onclick="showSection('home')" class="nav-btn hover:text-gold-400 transition-colors py-2 text-gold-400 font-semibold">Home</button>
+                    <button onclick="showSection('about')" class="nav-btn hover:text-gold-400 transition-colors py-2 text-gray-300">Corporate Overview</button>
+                    <button onclick="showSection('portfolio')" class="nav-btn hover:text-gold-400 transition-colors py-2 text-gray-300">Group Subsidiaries</button>
+                    <button onclick="showSection('investor')" class="nav-btn hover:text-gold-400 transition-colors py-2 text-gray-300">Investor Relations</button>
+                    <button onclick="showSection('contact')" class="nav-btn hover:text-gold-400 transition-colors py-2 text-gray-300">Contact</button>
+                </div>
+
+                <!-- Action CTA -->
+                <div class="hidden lg:flex items-center gap-4">
+                    <button onclick="openModal('portal-modal')" class="px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-navy-950 bg-gradient-to-r from-gold-400 to-gold-600 hover:from-gold-300 hover:to-gold-500 transition-all shadow-md shadow-gold-500/20">
+                        Partner Portal <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i>
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-gold-400 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div class="hidden md:hidden bg-navy-900/95 backdrop-blur-xl border-b border-gold-500/20" id="mobile-menu">
+            <div class="px-4 pt-4 pb-6 space-y-3 font-medium">
+                <button onclick="showSection('home'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 text-gold-400">Home</button>
+                <button onclick="showSection('about'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 text-gray-300 hover:text-gold-400">Corporate Overview</button>
+                <button onclick="showSection('portfolio'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 text-gray-300 hover:text-gold-400">Group Subsidiaries</button>
+                <button onclick="showSection('investor'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 text-gray-300 hover:text-gold-400">Investor Relations</button>
+                <button onclick="showSection('contact'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 text-gray-300 hover:text-gold-400">Contact</button>
+                <button onclick="openModal('portal-modal'); toggleMobileMenu()" class="w-full mt-2 px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-navy-950 bg-gold-500 text-center">
+                    Partner Portal
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SECTION CONTENT CONTAINER -->
+    <main class="pt-20">
+
+        <!-- ================= HOME SECTION ================= -->
+        <section id="sec-home" class="relative min-h-[92vh] flex items-center justify-center hero-bg overflow-hidden py-20">
+            <canvas id="hero-canvas"></canvas>
+
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <!-- Tagline Badge -->
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-500/10 border border-gold-500/30 text-gold-400 text-xs tracking-widest uppercase font-semibold mb-8 animate-pulse">
+                    <i class="fa-solid fa-crown text-xs"></i> Strategic Multi-Industry Holdings
+                </div>
+
+                <!-- Main Headline -->
+                <h1 class="heading-font text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-tight mb-6">
+                    ENGINEERING CAPITAL,<br>
+                    <span class="gold-gradient-text">SHAPING DIVERSIFIED ENTERPRISE</span>
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="max-w-3xl mx-auto text-base sm:text-lg text-gray-300 mb-10 font-light leading-relaxed">
+                    KAWACH GROUP stands as an institutional apex entity steering market dominance, financial engineering, high-growth capital investments, real-world asset innovation, and industrial manufacturing ventures.
+                </p>
+
+                <!-- Hero CTAs -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+                    <button onclick="showSection('portfolio')" class="w-full sm:w-auto px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-wider text-navy-950 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 hover:shadow-lg hover:shadow-gold-500/30 transition-all">
+                        Explore Group Subsidiaries <i class="fa-solid fa-arrow-trend-up ml-2"></i>
+                    </button>
+                    <button onclick="showSection('about')" class="w-full sm:w-auto px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-wider text-white border border-gold-500/40 hover:bg-gold-500/10 transition-all">
+                        Corporate Structure
+                    </button>
+                </div>
+
+                <!-- Key Metrics Bar -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+                    <div class="glass-card p-6 rounded-2xl text-center">
+                        <div class="heading-font text-3xl lg:text-4xl font-extrabold text-gold-400 mb-1">$50M+</div>
+                        <div class="text-xs uppercase text-gray-400 tracking-wider">AUM & Target Assets</div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl text-center">
+                        <div class="heading-font text-3xl lg:text-4xl font-extrabold text-gold-400 mb-1">4+</div>
+                        <div class="text-xs uppercase text-gray-400 tracking-wider">Strategic Business Verticals</div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl text-center">
+                        <div class="heading-font text-3xl lg:text-4xl font-extrabold text-gold-400 mb-1">Institutional</div>
+                        <div class="text-xs uppercase text-gray-400 tracking-wider">Risk Architecture</div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl text-center">
+                        <div class="heading-font text-3xl lg:text-4xl font-extrabold text-gold-400 mb-1">Multi-Asset</div>
+                        <div class="text-xs uppercase text-gray-400 tracking-wider">Growth Framework</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= ABOUT SECTION ================= -->
+        <section id="sec-about" class="hidden py-16 bg-navy-900/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Section Title -->
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-xs uppercase tracking-[0.3em] text-gold-400 font-bold mb-3">Corporate Architecture</h2>
+                    <h3 class="heading-font text-3xl sm:text-5xl font-bold text-white mb-6">The Institutional Shield</h3>
+                    <p class="text-gray-400 font-light text-base">
+                        Modeled after premier global holding conglomerates, KAWACH operates as the central governance, strategic allocation, and risk-management umbrella overseeing autonomous operational entities.
+                    </p>
+                </div>
+
+                <!-- Vision & Mission Grid -->
+                <div class="grid md:grid-cols-3 gap-8 mb-16">
+                    <div class="glass-card p-8 rounded-2xl">
+                        <div class="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-xl mb-6">
+                            <i class="fa-solid fa-eye"></i>
+                        </div>
+                        <h4 class="heading-font text-xl font-bold text-white mb-3">Apex Governance</h4>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Ensuring robust capital allocation, risk modeling, and institutional compliance across all subsidiary verticals to maximize long-term shareholder equity.
+                        </p>
+                    </div>
+
+                    <div class="glass-card p-8 rounded-2xl">
+                        <div class="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-xl mb-6">
+                            <i class="fa-solid fa-cubes-stacked"></i>
+                        </div>
+                        <h4 class="heading-font text-xl font-bold text-white mb-3">Diversified Synergy</h4>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Combining public market asset management, real-world asset tokenization, consumer goods manufacturing, and tech innovation into a resilient ecosystem.
+                        </p>
+                    </div>
+
+                    <div class="glass-card p-8 rounded-2xl">
+                        <div class="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-xl mb-6">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h4 class="heading-font text-xl font-bold text-white mb-3">Zero-Knowledge Security</h4>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Deploying advanced risk mitigation algorithms, smart contract architecture, and algorithmic hedging to safeguard multi-vertical holdings.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Group Leadership Message -->
+                <div class="glass-card p-8 sm:p-12 rounded-3xl border border-gold-500/20 bg-gradient-to-r from-navy-900 via-navy-800 to-navy-900">
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="w-32 h-32 rounded-2xl bg-navy-950 border-2 border-gold-500/40 flex flex-col items-center justify-center p-4 text-center shrink-0 shadow-lg">
+                            <i class="fa-solid fa-user-tie text-4xl text-gold-400 mb-2"></i>
+                            <span class="text-[10px] uppercase font-bold text-gray-300">Executive Chair</span>
+                        </div>
+                        <div>
+                            <h4 class="heading-font text-2xl font-bold text-white mb-2">Posh Bahadur Dahal</h4>
+                            <p class="text-gold-400 text-xs font-semibold uppercase tracking-widest mb-4">Founder & Managing Director | KAWACH Group</p>
+                            <p class="text-gray-300 text-sm sm:text-base italic leading-relaxed">
+                                "Our mission with KAWACH is to build an unshakeable institutional foundation—a fortress of capital efficiency, technological dominance, and operational excellence capable of scaling across domestic and international markets."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= PORTFOLIO / SUBSIDIARIES SECTION ================= -->
+        <section id="sec-portfolio" class="hidden py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Header -->
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-xs uppercase tracking-[0.3em] text-gold-400 font-bold mb-3">Group Entities</h2>
+                    <h3 class="heading-font text-3xl sm:text-5xl font-bold text-white mb-6">Subsidiary Ecosystem</h3>
+                    <p class="text-gray-400 font-light text-base">
+                        Select a company vertical below to view detailed corporate operational profiles, portfolio highlights, and technical architecture.
+                    </p>
+                </div>
+
+                <!-- Subsidiary Selector Tabs -->
+                <div class="flex flex-wrap items-center justify-center gap-3 mb-12">
+                    <button onclick="switchSubsidiary('arthavest')" id="tab-arthavest" class="sub-tab px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all bg-gold-500 text-navy-950 shadow-md shadow-gold-500/20">
+                        <i class="fa-solid fa-chart-line mr-2"></i> Arthavest Investment
+                    </button>
+                    <button onclick="switchSubsidiary('rwa')" id="tab-rwa" class="sub-tab px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all bg-navy-900 text-gray-400 hover:text-white border border-gold-500/20">
+                        <i class="fa-solid fa-building-columns mr-2"></i> Kawach RWA & Smart Contracts
+                    </button>
+                    <button onclick="switchSubsidiary('fmcg')" id="tab-fmcg" class="sub-tab px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all bg-navy-900 text-gray-400 hover:text-white border border-gold-500/20">
+                        <i class="fa-solid fa-wheat-awn mr-2"></i> FMCG & Spice Manufacturing
+                    </button>
+                    <button onclick="switchSubsidiary('tech')" id="tab-tech" class="sub-tab px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all bg-navy-900 text-gray-400 hover:text-white border border-gold-500/20">
+                        <i class="fa-solid fa-microchip mr-2"></i> FinTech & Analytics
+                    </button>
+                </div>
+
+                <!-- SUBSIDIARY 1: ARTHAVEST INVESTMENT COMPANY -->
+                <div id="sub-arthavest" class="sub-content space-y-8">
+                    <div class="glass-card p-8 sm:p-12 rounded-3xl border border-gold-500/30">
+                        <div class="flex flex-col lg:flex-row items-start justify-between gap-8 mb-8">
+                            <div>
+                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase mb-4">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Operational & Registered Entity
+                                </div>
+                                <h3 class="heading-font text-3xl font-bold text-white mb-2">Arthavest Investment Company Pvt. Ltd.</h3>
+                                <p class="text-gold-400 text-xs uppercase tracking-widest font-semibold">Flagship Equity & Market Investment Engine</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <button onclick="openModal('arthavest-modal')" class="px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white border border-gold-500/40 hover:bg-gold-500/10">
+                                    View Dashboard Metrics <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-300 text-sm sm:text-base leading-relaxed mb-8">
+                            Arthavest Investment Company is KAWACH Group’s core financial powerhouse. Registered under the Office of the Company Registrar, Arthavest executes systematic multi-partner capital pooling, quantitative NEPSE equity investments, gold (XAU/USD) strategies, and proprietary risk-managed portfolio allocations.
+                        </p>
+
+                        <!-- Highlights Grid -->
+                        <div class="grid sm:grid-cols-3 gap-6">
+                            <div class="p-5 rounded-xl bg-navy-950/60 border border-gold-500/10">
+                                <div class="text-gold-400 font-bold text-lg mb-1">10 Partner Synergy</div>
+                                <p class="text-gray-400 text-xs">Pooled equity investment framework with structured corporate charter governance.</p>
+                            </div>
+                            <div class="p-5 rounded-xl bg-navy-950/60 border border-gold-500/10">
+                                <div class="text-gold-400 font-bold text-lg mb-1">Quantitative Screening</div>
+                                <p class="text-gray-400 text-xs">Monte Carlo simulations, VaR models, and technical trading strategies for NEPSE & Global Commodities.</p>
+                            </div>
+                            <div class="p-5 rounded-xl bg-navy-950/60 border border-gold-500/10">
+                                <div class="text-gold-400 font-bold text-lg mb-1">Brokerage & TMS Ready</div>
+                                <p class="text-gray-400 text-xs">Full institutional Demat, MeroShare, and specialized TMS authorization.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBSIDIARY 2: KAWACH RWA SMART CONTRACTS -->
+                <div id="sub-rwa" class="sub-content hidden space-y-8">
+                    <div class="glass-card p-8 sm:p-12 rounded-3xl border border-gold-500/30">
+                        <div class="flex flex-col lg:flex-row items-start justify-between gap-8 mb-8">
+                            <div>
+                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-bold uppercase mb-4">
+                                    <i class="fa-solid fa-code text-xs"></i> Advanced Architecture Phase
+                                </div>
+                                <h3 class="heading-font text-3xl font-bold text-white mb-2">Kawach ($KWC) RWA Tokenization</h3>
+                                <p class="text-gold-400 text-xs uppercase tracking-widest font-semibold">Institutional Real World Asset Ethereum Smart Contract</p>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-300 text-sm sm:text-base leading-relaxed mb-8">
+                            Engineered for high-value commercial real estate tokenization and institutional asset backed liquidity. Kawach ($KWC) integrates multi-signature corporate governance, zero-knowledge self-recovery protocols, and automated anti-exploit behavioral defense mechanisms directly into the Ethereum blockchain.
+                        </p>
+
+                        <div class="grid sm:grid-cols-3 gap-6">
+                            <div class="p-5 rounded-xl bg-navy-950/60 border border-gold-500/10">
+                                <div class="text-gold-400 font-bold text-lg mb-1">Multi-Sig Vault</div>
+                                <p class="text-gray-400 text-xs">Multi-partner quorum execution for capital allocation and asset lockups.</p>
+                            </div>
+                            <div class="p-5 rounded-xl bg-navy-950/60 border border-gold-500/10">
+                                <div class="text-gold-400 font-bold text-lg mb-1">ZK-Self Recovery</div>
+                                <p class="text-gray-400 text-xs">Zero-knowledge proof-based emergency access key restoration protocol.</p>
+                            </div>
+                            <div class="p-5 rounded-xl bg-navy-950/60 border border-gold-500/10">
+                                <div class="text-gold-400 font-bold text-lg mb-1">Fractional Real Estate</div>
+                                <p class="text-gray-400 text-xs">On-chain yield distribution derived from commercial lease revenues.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBSIDIARY 3: FMCG & SPICE MANUFACTURING -->
+                <div id="sub-fmcg" class="sub-content hidden space-y-8">
+                    <div class="glass-card p-8 sm:p-12 rounded-3xl border border-gold-500/30">
+                        <div class="flex flex-col lg:flex-row items-start justify-between gap-8 mb-8">
+                            <div>
+                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase mb-4">
+                                    <i class="fa-solid fa-industry text-xs"></i> Market Entry & Setup Phase
+                                </div>
+                                <h3 class="heading-font text-3xl font-bold text-white mb-2">Kawach Foods & FMCG Manufacturing</h3>
+                                <p class="text-gold-400 text-xs uppercase tracking-widest font-semibold">Premium Spice Processing & FMCG Supply Chain</p>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-300 text-sm sm:text-base leading-relaxed mb-8">
+                            Entering Nepal's high-demand FMCG sector, Kawach Foods establishes modern spice processing, automated packaging, and domestic distribution channels. Leveraging organic local sourcing and high-efficiency manufacturing standards.
+                        </p>
+
+                        <div class="grid sm:grid-cols-3 gap-6">
+                            <div class="p-5 rounded-xl bg-navy-950/60 border border-gold-500/10">
+                                <div class="text-gold-400 font-bold text-lg mb-1">State-of-the-Art Processing</div>
+                                <p class="text-gray-400 text-xs">Hygienic cold-grinding technology preserving essential aromatic oils.</p>
+                            </div>
+                            <div class="p-5 rounded-xl bg-navy-950/60 border border-gold-500/10">
+                                <div class="text-gold-400 font-bold text-lg mb-1">Nationwide Distribution</div>
+                                <p class="text-gray-400 text-xs">Robust retail and wholesale FMCG network setup throughout Nepal.</p>
+                            </div>
+                            <div class="p-5 rounded-xl bg-navy-950/60 border border-gold-500/10">
+                                <div class="text-gold-400 font-bold text-lg mb-1">Agri-Sourcing Network</div>
+                                <p class="text-gray-400 text-xs">Direct partnerships with local farmers ensuring quality control at origin.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBSIDIARY 4: FINTECH & ANALYTICS -->
+                <div id="sub-tech" class="sub-content hidden space-y-8">
+                    <div class="glass-card p-8 sm:p-12 rounded-3xl border border-gold-500/30">
+                        <div class="flex flex-col lg:flex-row items-start justify-between gap-8 mb-8">
+                            <div>
+                                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold uppercase mb-4">
+                                    <i class="fa-solid fa-server text-xs"></i> In-House R&D
+                                </div>
+                                <h3 class="heading-font text-3xl font-bold text-white mb-2">Arthavest P2P & Market Tech Engine</h3>
+                                <p class="text-gold-400 text-xs uppercase tracking-widest font-semibold">Quantitative Screening & Institutional Risk Platforms</p>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-300 text-sm sm:text-base leading-relaxed mb-8">
+                            Our proprietary tech stack powering internal market intelligence. Arthavest Tech builds automated FastAPI quantitative screening tools, portfolio dashboards, and is pioneering the Arthavest P2P peer-to-peer micro-lending framework.
+                        </p>
+
+                        <div class="grid sm:grid-cols-3 gap-6">
+                            <div class="p-5 rounded-xl bg-navy-950/60 border border-gold-500/10">
+                                <div class="text-gold-400 font-bold text-lg mb-1">FastAPI Risk Engine</div>
+                                <p class="text-gray-400 text-xs">High-speed real-time technical & quantitative market data processing.</p>
+                            </div>
+                            <div class="p-5 rounded-xl bg-navy-950/60 border border-gold-500/10">
+                                <div class="text-gold-400 font-bold text-lg mb-1">Arthavest P2P Platform</div>
+                                <p class="text-gray-400 text-xs">Automated credit scoring and peer-to-peer liquidity deployment model.</p>
+                            </div>
+                            <div class="p-5 rounded-xl bg-navy-950/60 border border-gold-500/10">
+                                <div class="text-gold-400 font-bold text-lg mb-1">Institutional Aladdin-style Risk</div>
+                                <p class="text-gray-400 text-xs">Inspired by BlackRock Aladdin risk modeling architecture.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= INVESTOR RELATIONS SECTION ================= -->
+        <section id="sec-investor" class="hidden py-16 bg-navy-900/40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-xs uppercase tracking-[0.3em] text-gold-400 font-bold mb-3">Capital & Performance</h2>
+                    <h3 class="heading-font text-3xl sm:text-5xl font-bold text-white mb-6">Investor Relations & Metrics</h3>
+                    <p class="text-gray-400 font-light text-base">
+                        KAWACH GROUP maintains absolute transparent capital governance for our partners and institutional stakeholders.
+                    </p>
+                </div>
+
+                <!-- Metrics & Chart Grid -->
+                <div class="grid lg:grid-cols-3 gap-8 mb-12">
+                    
+                    <!-- Chart Widget -->
+                    <div class="lg:col-span-2 glass-card p-6 sm:p-8 rounded-3xl">
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h4 class="heading-font text-xl font-bold text-white">Group Consolidated Growth Simulation</h4>
+                                <p class="text-xs text-gray-400">Quarterly Asset Allocations across Equity, RWA & Industrial Ops</p>
+                            </div>
+                            <span class="text-xs font-bold text-gold-400 bg-gold-500/10 px-3 py-1 rounded-full border border-gold-500/20">AUM Projection</span>
+                        </div>
+                        <div class="h-64 sm:h-80">
+                            <canvas id="investorChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Capital Allocation Breakdown -->
+                    <div class="glass-card p-6 sm:p-8 rounded-3xl flex flex-col justify-between">
+                        <div>
+                            <h4 class="heading-font text-xl font-bold text-white mb-6">Capital Allocation Strategy</h4>
+                            
+                            <div class="space-y-6">
+                                <div>
+                                    <div class="flex justify-between text-xs font-bold mb-2">
+                                        <span class="text-gray-300">Public Equity & Equities (Arthavest)</span>
+                                        <span class="text-gold-400">45%</span>
+                                    </div>
+                                    <div class="w-full h-2 rounded-full bg-navy-950 overflow-hidden">
+                                        <div class="h-full bg-gold-500" style="width: 45%"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-xs font-bold mb-2">
+                                        <span class="text-gray-300">RWA Smart Contract & Real Estate</span>
+                                        <span class="text-purple-400">25%</span>
+                                    </div>
+                                    <div class="w-full h-2 rounded-full bg-navy-950 overflow-hidden">
+                                        <div class="h-full bg-purple-500" style="width: 25%"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-xs font-bold mb-2">
+                                        <span class="text-gray-300">FMCG & Industrial Operations</span>
+                                        <span class="text-amber-400">20%</span>
+                                    </div>
+                                    <div class="w-full h-2 rounded-full bg-navy-950 overflow-hidden">
+                                        <div class="h-full bg-amber-500" style="width: 20%"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-xs font-bold mb-2">
+                                        <span class="text-gray-300">Liquid Cash & Commodities Reserves</span>
+                                        <span class="text-emerald-400">10%</span>
+                                    </div>
+                                    <div class="w-full h-2 rounded-full bg-navy-950 overflow-hidden">
+                                        <div class="h-full bg-emerald-500" style="width: 10%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="openModal('portal-modal')" class="w-full mt-8 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-navy-950 bg-gold-500 hover:bg-gold-400 transition-all text-center">
+                            Download Shareholder Report
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= CONTACT SECTION ================= -->
+        <section id="sec-contact" class="hidden py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="grid lg:grid-cols-2 gap-12">
+                    
+                    <!-- Contact Info -->
+                    <div>
+                        <h2 class="text-xs uppercase tracking-[0.3em] text-gold-400 font-bold mb-3">Corporate Headquarters</h2>
+                        <h3 class="heading-font text-3xl sm:text-5xl font-bold text-white mb-6">Connect With KAWACH GROUP</h3>
+                        <p class="text-gray-400 font-light text-base mb-10 leading-relaxed">
+                            For corporate partnerships, institutional investments, subsidiary inquiries, or joint ventures, reach out to our executive headquarters.
+                        </p>
+
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 text-lg shrink-0">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <h5 class="text-sm font-bold text-white mb-1">Corporate Office Location</h5>
+                                    <p class="text-gray-400 text-xs leading-relaxed">Ward 8, Kathmandu Metropolitan City, Nepal</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 text-lg shrink-0">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h5 class="text-sm font-bold text-white mb-1">Executive Email</h5>
+                                    <p class="text-gray-400 text-xs">contact@kawachgroup.com | corporate@arthavest.com</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/20 flex items-center justify-center text-gold-400 text-lg shrink-0">
+                                    <i class="fa-solid fa-building"></i>
+                                </div>
+                                <div>
+                                    <h5 class="text-sm font-bold text-white mb-1">Company Registration</h5>
+                                    <p class="text-gray-400 text-xs">Office of the Company Registrar, Government of Nepal (Reg. Falgun 2082)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div class="glass-card p-8 sm:p-10 rounded-3xl border border-gold-500/20">
+                        <h4 class="heading-font text-2xl font-bold text-white mb-6">Send Partnership Inquiry</h4>
+                        
+                        <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-5">
+                            <div>
+                                <label class="block text-xs uppercase text-gray-400 font-bold mb-2">Full Name</label>
+                                <input type="text" required class="w-full px-4 py-3 rounded-xl bg-navy-950 border border-gold-500/20 text-white focus:outline-none focus:border-gold-500 text-sm" placeholder="e.g. Executive Partner">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase text-gray-400 font-bold mb-2">Corporate Email</label>
+                                <input type="email" required class="w-full px-4 py-3 rounded-xl bg-navy-950 border border-gold-500/20 text-white focus:outline-none focus:border-gold-500 text-sm" placeholder="partner@institution.com">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase text-gray-400 font-bold mb-2">Subsidiary / Vertical of Interest</label>
+                                <select class="w-full px-4 py-3 rounded-xl bg-navy-950 border border-gold-500/20 text-white focus:outline-none focus:border-gold-500 text-sm">
+                                    <option>KAWACH Parent Group Holdings</option>
+                                    <option>Arthavest Investment Company</option>
+                                    <option>Kawach ($KWC) RWA Smart Contract</option>
+                                    <option>FMCG & Spice Manufacturing Venture</option>
+                                    <option>Arthavest P2P & FinTech Engine</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase text-gray-400 font-bold mb-2">Message</label>
+                                <textarea rows="4" required class="w-full px-4 py-3 rounded-xl bg-navy-950 border border-gold-500/20 text-white focus:outline-none focus:border-gold-500 text-sm" placeholder="Describe your corporate inquiry or strategic investment proposal..."></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-4 rounded-xl text-xs font-bold uppercase tracking-wider text-navy-950 bg-gradient-to-r from-gold-400 to-gold-600 hover:from-gold-300 hover:to-gold-500 transition-all shadow-md shadow-gold-500/20">
+                                Submit Formal Inquiry <i class="fa-solid fa-paper-plane ml-2"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-gold-500/10 bg-navy-950 py-12 text-sm text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <div class="md:col-span-2">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-gold-500 flex items-center justify-center text-navy-950 font-bold">
+                            <i class="fa-solid fa-shield-halved text-sm"></i>
+                        </div>
+                        <span class="heading-font text-xl font-bold text-white tracking-wider">KAWACH GROUP</span>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed max-w-sm">
+                        KAWACH Group is a premier institutional parent conglomerate orchestrating financial asset management, real-world asset tokenization, industrial manufacturing, and market quantitative systems.
+                    </p>
+                </div>
+
+                <div>
+                    <h5 class="text-white text-xs uppercase tracking-widest font-bold mb-4">Group Verticals</h5>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#" onclick="showSection('portfolio'); switchSubsidiary('arthavest')" class="hover:text-gold-400">Arthavest Investment Co.</a></li>
+                        <li><a href="#" onclick="showSection('portfolio'); switchSubsidiary('rwa')" class="hover:text-gold-400">Kawach RWA ($KWC)</a></li>
+                        <li><a href="#" onclick="showSection('portfolio'); switchSubsidiary('fmcg')" class="hover:text-gold-400">Kawach FMCG & Spices</a></li>
+                        <li><a href="#" onclick="showSection('portfolio'); switchSubsidiary('tech')" class="hover:text-gold-400">Arthavest Tech & P2P</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-white text-xs uppercase tracking-widest font-bold mb-4">Governance</h5>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#" onclick="openModal('portal-modal')" class="hover:text-gold-400">Partner Login</a></li>
+                        <li><a href="#" onclick="showSection('investor')" class="hover:text-gold-400">Investor Relations</a></li>
+                        <li><a href="#" onclick="showSection('about')" class="hover:text-gold-400">Executive Structure</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-navy-900 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500">
+                <p>&copy; 2026 KAWACH GROUP. All rights reserved. Arthavest Investment Company Pvt. Ltd.</p>
+                <div class="flex space-x-6 mt-4 sm:mt-0">
+                    <a href="#" class="hover:text-gold-400"><i class="fa-brands fa-linkedin text-base"></i></a>
+                    <a href="#" class="hover:text-gold-400"><i class="fa-brands fa-github text-base"></i></a>
+                    <a href="#" class="hover:text-gold-400"><i class="fa-solid fa-globe text-base"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL: PARTNER PORTAL -->
+    <div id="portal-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="glass-card max-w-md w-full p-8 rounded-3xl relative border border-gold-500/30">
+            <button onclick="closeModal('portal-modal')" class="absolute top-6 right-6 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-xl mx-auto mb-3">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h3 class="heading-font text-2xl font-bold text-white">KAWACH Partner Portal</h3>
+                <p class="text-xs text-gray-400 mt-1">Authorized Shareholder & Partner Authentication</p>
+            </div>
+
+            <form onsubmit="handlePortalLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs uppercase text-gray-400 font-bold mb-1">Partner ID / Email</label>
+                    <input type="text" required class="w-full px-4 py-2.5 rounded-xl bg-navy-950 border border-gold-500/20 text-white text-sm focus:outline-none focus:border-gold-500" placeholder="partner@arthavest.com">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase text-gray-400 font-bold mb-1">Security Key / Password</label>
+                    <input type="password" required class="w-full px-4 py-2.5 rounded-xl bg-navy-950 border border-gold-500/20 text-white text-sm focus:outline-none focus:border-gold-500" placeholder="••••••••••••">
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-navy-950 bg-gold-500 hover:bg-gold-400 transition-all">
+                    Access Dashboard
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: ARTHAVEST DASHBOARD METRICS -->
+    <div id="arthavest-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="glass-card max-w-2xl w-full p-8 rounded-3xl relative border border-gold-500/30">
+            <button onclick="closeModal('arthavest-modal')" class="absolute top-6 right-6 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-12 h-12 rounded-xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-2xl">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <div>
+                    <h3 class="heading-font text-2xl font-bold text-white">Arthavest Investment Co.</h3>
+                    <p class="text-xs text-gold-400 uppercase font-bold tracking-widest">Live Portfolio Strategy Overview</p>
+                </div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-4 mb-6">
+                <div class="p-4 rounded-xl bg-navy-950 border border-gold-500/10">
+                    <div class="text-xs text-gray-400">Core Market Focus</div>
+                    <div class="text-white font-bold text-sm mt-1">NEPSE Equities & XAU/USD</div>
+                </div>
+                <div class="p-4 rounded-xl bg-navy-950 border border-gold-500/10">
+                    <div class="text-xs text-gray-400">Quantitative Framework</div>
+                    <div class="text-white font-bold text-sm mt-1">Monte Carlo & VaR Screening</div>
+                </div>
+                <div class="p-4 rounded-xl bg-navy-950 border border-gold-500/10">
+                    <div class="text-xs text-gray-400">Governance</div>
+                    <div class="text-white font-bold text-sm mt-1">10 Founding Shareholders</div>
+                </div>
+                <div class="p-4 rounded-xl bg-navy-950 border border-gold-500/10">
+                    <div class="text-xs text-gray-400">Registration</div>
+                    <div class="text-white font-bold text-sm mt-1">OCR Nepal Reg. (Falgun 2082)</div>
+                </div>
+            </div>
+
+            <button onclick="closeModal('arthavest-modal')" class="w-full py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-navy-950 bg-gold-500">
+                Close Snapshot
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // --- NAVIGATION LOGIC ---
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = ['home', 'about', 'portfolio', 'investor', 'contact'];
+            sections.forEach(sec => {
+                const el = document.getElementById('sec-' + sec);
+                if (el) el.classList.add('hidden');
+            });
+
+            // Show selected section
+            const activeEl = document.getElementById('sec-' + sectionId);
+            if (activeEl) activeEl.classList.remove('hidden');
+
+            // Scroll top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Re-render chart if investor section activated
+            if (sectionId === 'investor') {
+                initInvestorChart();
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+
+        // --- SUBSIDIARY TAB SWITCHER ---
+        function switchSubsidiary(subId) {
+            // Hide all content divs
+            const contents = document.querySelectorAll('.sub-content');
+            contents.forEach(c => c.classList.add('hidden'));
+
+            // Show selected sub-content
+            const target = document.getElementById('sub-' + subId);
+            if (target) target.classList.remove('hidden');
+
+            // Reset tab styles
+            const tabs = document.querySelectorAll('.sub-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('bg-gold-500', 'text-navy-950', 'shadow-md', 'shadow-gold-500/20');
+                tab.classList.add('bg-navy-900', 'text-gray-400', 'border', 'border-gold-500/20');
+            });
+
+            // Highlight active tab
+            const activeTab = document.getElementById('tab-' + subId);
+            if (activeTab) {
+                activeTab.classList.remove('bg-navy-900', 'text-gray-400', 'border', 'border-gold-500/20');
+                activeTab.classList.add('bg-gold-500', 'text-navy-950', 'shadow-md', 'shadow-gold-500/20');
+            }
+        }
+
+        // --- MODAL CONTROLS ---
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        // --- FORM HANDLERS ---
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            alert('Thank you for contacting KAWACH GROUP. Your strategic message has been routed to Executive Management.');
+            e.target.reset();
+        }
+
+        function handlePortalLogin(e) {
+            e.preventDefault();
+            alert('Partner Portal credentials verified. Redirecting to Arthavest Portfolio Management System...');
+            closeModal('portal-modal');
+        }
+
+        // --- INVESTOR CHART.JS INITIALIZATION ---
+        let chartInstance = null;
+        function initInvestorChart() {
+            const ctx = document.getElementById('investorChart');
+            if (!ctx) return;
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025', 'Q1 2026', 'Q2 2026', 'Q3 2026', 'Q4 2026 (Est)'],
+                    datasets: [
+                        {
+                            label: 'Arthavest Investment Co.',
+                            data: [10, 15, 22, 28, 38, 45, 58, 70],
+                            borderColor: '#E5B834',
+                            backgroundColor: 'rgba(229, 184, 52, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Kawach RWA ($KWC)',
+                            data: [0, 2, 5, 12, 18, 25, 34, 48],
+                            borderColor: '#A855F7',
+                            backgroundColor: 'rgba(168, 85, 247, 0.05)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'FMCG & Industrial Operations',
+                            data: [0, 0, 1, 4, 10, 16, 24, 35],
+                            borderColor: '#F59E0B',
+                            backgroundColor: 'transparent',
+                            borderDash: [5, 5],
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#9ca3af', font: { family: 'Plus Jakarta Sans', size: 11 } }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#9ca3af' }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#9ca3af' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- KINETIC PARTICLE BACKGROUND CANVAS ---
+        const canvas = document.getElementById('hero-canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = canvas.parentElement.clientWidth;
+            let height = canvas.height = canvas.parentElement.clientHeight;
+
+            window.addEventListener('resize', () => {
+                if (!canvas.parentElement) return;
+                width = canvas.width = canvas.parentElement.clientWidth;
+                height = canvas.height = canvas.parentElement.clientHeight;
+            });
+
+            const particles = Array.from({ length: 45 }, () => ({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.6,
+                vy: (Math.random() - 0.5) * 0.6,
+                radius: Math.random() * 2 + 1
+            }));
+
+            function animateCanvas() {
+                ctx.clearRect(0, 0, width, height);
+
+                for (let i = 0; i < particles.length; i++) {
+                    let p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0 || p.x > width) p.vx *= -1;
+                    if (p.y < 0 || p.y > height) p.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(229, 184, 52, 0.4)';
+                    ctx.fill();
+
+                    for (let j = i + 1; j < particles.length; j++) {
+                        let p2 = particles[j];
+                        let dx = p.x - p2.x;
+                        let dy = p.y - p2.y;
+                        let dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < 120) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = `rgba(229, 184, 52, ${0.15 * (1 - dist / 120)})`;
+                            ctx.lineWidth = 0.6;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animateCanvas);
+            }
+            animateCanvas();
+        }
+    </script>
+</body>
+</html>
+
